@@ -1,1 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS AI</title>
 
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #020912;
+  color: #00d9ff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 22px;
+  border-bottom: 1px solid #075c79;
+  letter-spacing: 4px;
+}
+
+header h1 {
+  font-size: 30px;
+  text-shadow: 0 0 15px #00d9ff;
+}
+
+.status {
+  color: #00ff99;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.container {
+  text-align: center;
+  padding: 30px 15px;
+}
+
+.core {
+  width: 210px;
+  height: 210px;
+  border: 3px solid #00d9ff;
+  border-radius: 50%;
+  margin: 15px auto 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 25px #00d9ff,
+              inset 0 0 25px #007bff;
+  animation: glow 2s infinite alternate;
+}
+
+.core::before {
+  content: "";
+  position: absolute;
+  width: 175px;
+  height: 175px;
+  border: 2px dashed #00d9ff;
+  border-radius: 50%;
+  animation: rotate 8s linear infinite;
+}
+
+.core::after {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 2px solid #087da9;
+  border-radius: 50%;
+}
+
+.core span {
+  font-size: 35px;
+  font-weight: bold;
+  z-index: 1;
+  text-shadow: 0 0 15px #00d9ff;
+}
+
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 15px #00d9ff; }
+  to { box-shadow: 0 0 35px #00d9ff; }
+}
+
+#response {
+  min-height: 55px;
+  margin: 20px auto;
+  max-width: 500px;
+  padding: 15px;
+  border: 1px solid #075c79;
+  border-radius: 10px;
+  color: white;
+  line-height: 1.5;
+}
+
+button {
+  background: #003d58;
+  color: #00e5ff;
+  border: 1px solid #00d9ff;
+  padding: 13px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin: 7px;
+  cursor: pointer;
+}
+
+button:active {
+  background: #007caa;
+}
+
+.mic {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  font-size: 30px;
+  box-shadow: 0 0 20px #00d9ff;
+}
+
+input {
+  width: 65%;
+  max-width: 400px;
+  padding: 14px;
+  background: #071b2c;
+  border: 1px solid #00d9ff;
+  color: white;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.info {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid #075c79;
+  color: #8beaff;
+  font-size: 13px;
+  line-height: 2;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #477c91;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>J.A.R.V.I.S</h1>
+  <div class="status">● SYSTEM ONLINE</div>
+  <p>PERSONAL AI ASSISTANT</p>
+</header>
+
+<div class="container">
+
+  <div class="core">
+    <span>AI</span>
+  </div>
+
+  <h3>HELLO, I AM JARVIS</h3>
+  <p style="margin-top:10px;color:#7caebf">
+    Your Personal Voice Assistant
+  </p>
+
+  <div id="response">
+    Hello Alkam! I am JARVIS. How can I help you?
+  </div>
+
+  <button class="mic" onclick="startListening()">🎙️</button>
+
+  <p id="status" style="margin:15px">
+    Tap microphone to speak
+  </p>
+
+  <div>
+    <input id="userInput"
+    placeholder="Ask JARVIS anything...">
+
+    <button onclick="sendMessage()">SEND ➤</button>
+  </div>
+
+  <div class="info">
+    <p>⚡ VOICE RECOGNITION</p>
+    <p>⚡ SMART ASSISTANT</p>
+    <p>⚡ HINDI + ENGLISH</p>
+    <p>⚡ VOICE RESPONSE</p>
+    <p>⚡ FUTURISTIC INTERFACE</p>
+  </div>
+
+</div>
+
+<footer>
+  JARVIS AI © 2026 | CREATED BY ALKAM
+</footer>
+
+<script>
+
+const response = document.getElementById("response");
+const statusText = document.getElementById("status");
+
+function speak(text) {
+  speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-IN";
+  speech.rate = 0.95;
+
+  speechSynthesis.speak(speech);
+}
+
+function reply(text) {
+  response.innerText = text;
+  speak(text);
+}
+
+function sendMessage() {
+
+  const input = document.getElementById("userInput");
+  const message = input.value.trim().toLowerCase();
+
+  if (!message) return;
+
+  input.value = "";
+
+  if (message.includes("hello") ||
+      message.includes("hi")) {
+    reply("Hello Alkam! How can I help you?");
+  }
+
+  else if (message.includes("your name") ||
+           message.includes("naam")) {
+    reply("My name is JARVIS, your personal AI assistant.");
+  }
+
+  else if (message.includes("who created") ||
+           message.includes("kisne banaya")) {
+    reply("I was created by Alkam.");
+  }
+
+  else if (message.includes("time") ||
+           message.includes("samay")) {
+    reply("The time is " +
+      new Date().toLocaleTimeString());
+  }
+
+  else if (message.includes("date") ||
+           message.includes("tarikh")) {
+    reply("Today's date is " +
+      new Date().toLocaleDateString());
+  }
+
+  else if (message.includes("how are you")) {
+    reply("I am functioning perfectly, Alkam.");
+  }
+
+  else if (message.includes("open youtube")) {
+    reply("Opening YouTube.");
+    window.open("https://youtube.com", "_blank");
+  }
+
+  else if (message.includes("open google")) {
+    reply("Opening Google.");
+    window.open("https://google.com", "_blank");
+  }
+
+  else {
+    reply("I heard you. My advanced AI brain is not connected yet. This feature will be added in the next update.");
+  }
+}
+
+function startListening() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    reply("Voice recognition is not supported in this browser.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  statusText.innerText = "Listening...";
+
+  recognition.onresult = function(event) {
+    const text = event.results[0][0].transcript;
+
+    document.getElementById("userInput").value = text;
+
+    statusText.innerText = "Command received";
+
+    sendMessage();
+  };
+
+  recognition.onerror = function() {
+    statusText.innerText = "Please try again.";
+  };
+
+  recognition.onend = function() {
+    statusText.innerText = "Tap microphone to speak";
+  };
+
+  recognition.start();
+}
+
+document.getElementById("userInput")
+.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") sendMessage();
+});
+
+</script>
+
+</body>
+  </html>
